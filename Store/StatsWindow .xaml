@@ -1,0 +1,101 @@
+﻿<Window x:Class="Store.StatsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Статистика и прогноз спроса"
+        Height="520" Width="640"
+        WindowStartupLocation="CenterOwner">
+	<Grid Margin="16">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<TextBlock Grid.Row="0" Text="Статистика и прогноз спроса"
+                   FontSize="16" FontWeight="Bold" Margin="0,0,0,12"/>
+		<UniformGrid Grid.Row="1" Rows="1" Margin="0,0,0,12">
+			<Border Background="#EEF2FF" CornerRadius="8" Margin="0,0,6,0" Padding="12">
+				<StackPanel>
+					<TextBlock Text="Товаров" FontSize="11" Foreground="#6B7280"/>
+					<TextBlock x:Name="TotalProducts" Text="—"
+                               FontSize="22" FontWeight="Bold" Foreground="#5B6AF0"/>
+				</StackPanel>
+			</Border>
+			<Border Background="#F0FDF4" CornerRadius="8" Margin="6,0,6,0" Padding="12">
+				<StackPanel>
+					<TextBlock Text="Заказов" FontSize="11" Foreground="#6B7280"/>
+					<TextBlock x:Name="TotalOrders" Text="—"
+                               FontSize="22" FontWeight="Bold" Foreground="#16A34A"/>
+				</StackPanel>
+			</Border>
+			<Border Background="#FFF7ED" CornerRadius="8" Margin="6,0,0,0" Padding="12">
+				<StackPanel>
+					<TextBlock Text="Низкий остаток" FontSize="11" Foreground="#6B7280"/>
+					<TextBlock x:Name="LowStockCount" Text="—"
+                               FontSize="22" FontWeight="Bold" Foreground="#EA580C"/>
+				</StackPanel>
+			</Border>
+		</UniformGrid>
+
+		<TabControl Grid.Row="2">
+
+			<TabItem Header="Прогноз спроса">
+				<Grid Margin="8">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+						<TextBlock Text="Товар:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+						<ComboBox x:Name="ForecastProductCombo" Width="200" Height="30"
+                                  DisplayMemberPath="Name" SelectedValuePath="Id"
+                                  SelectionChanged="ForecastProductCombo_SelectionChanged"/>
+						<TextBlock Text="Прогноз (ед/мес):" VerticalAlignment="Center"
+                                   Margin="16,0,8,0"/>
+						<TextBlock x:Name="ForecastResult" Text="—"
+                                   FontSize="18" FontWeight="Bold" Foreground="#5B6AF0"
+                                   VerticalAlignment="Center"/>
+					</StackPanel>
+					<DataGrid Grid.Row="1" x:Name="LowStockGrid"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              HeadersVisibility="Column" RowHeight="32" FontSize="12">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Товар"   Binding="{Binding Name}"          Width="*"/>
+							<DataGridTextColumn Header="Остаток" Binding="{Binding StockQuantity}"  Width="80"/>
+							
+						</DataGrid.Columns>
+					</DataGrid>
+				</Grid>
+			</TabItem>
+
+			<TabItem Header="Топ продаж">
+				<DataGrid x:Name="TopGrid" Margin="8"
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  HeadersVisibility="Column" RowHeight="32" FontSize="12">
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="Товар"   Binding="{Binding Name}"     Width="*"/>
+						<DataGridTextColumn Header="Продано" Binding="{Binding TotalSold}" Width="100"/>
+					</DataGrid.Columns>
+				</DataGrid>
+			</TabItem>
+
+			<TabItem Header="Выручка">
+				<DataGrid x:Name="RevenueGrid" Margin="8"
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  HeadersVisibility="Column" RowHeight="32" FontSize="12">
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="Месяц"   Binding="{Binding Month}"   Width="120"/>
+						<DataGridTextColumn Header="Выручка" Binding="{Binding Revenue, StringFormat={}{0:N2} &#x20BD;}" Width="*"/>
+					</DataGrid.Columns>
+				</DataGrid>
+			</TabItem>
+
+		</TabControl>
+
+		<Button Grid.Row="3" Content="Закрыть" HorizontalAlignment="Right"
+                Width="90" Height="32" Margin="0,12,0,0"
+                Click="Close_Click"/>
+	</Grid>
+</Window>
+
